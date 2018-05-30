@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
-import datetime, zipfile
+import datetime
+import zipfile
 from cStringIO import StringIO
 from collections import defaultdict
 from itertools import groupby
@@ -15,7 +16,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.defaultfilters import date
 from django.template.context_processors import csrf
-from django.template import RequestContext
+
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -187,10 +188,10 @@ def login(request):
     return render(request, 'login.html')
 
 def about(request):
-     return render_to_response('about.html', RequestContext(request))
+     return render_to_response('about.html')
 
 def prep(request):
-     return render_to_response('prep.html', RequestContext(request))
+     return render_to_response('prep.html')
 
 @login_required
 def campers(request):
@@ -204,8 +205,7 @@ def campers(request):
     for camper in campers:
         camper.restrictions = ", ".join(map(str, camper.meal_restrictions.all())) or "None"
 
-    context_dict = {'campers':campers}
-    return render_to_response('campers.html', RequestContext(request, context_dict))
+    return render_to_response('campers.html', {'campers': campers})
 
 
 def _initial_meal(meal):
@@ -295,10 +295,11 @@ def profile(request):
                 attendance_form.save()
             return redirect('profile')
 
-    return render(request, "profile.html", RequestContext(request, {
-            'form': form,
-            'attendance_form': attendance_form,
-            'profile': profile}))
+    return render(request, "profile.html", {
+        'form': form,
+        'attendance_form': attendance_form,
+        'profile': profile
+    })
 
 @login_required
 def vehicle(request):
@@ -318,7 +319,8 @@ def vehicle(request):
 
             return redirect('vehicle')
 
-    return render(request, "vehicle.html", RequestContext(request, {'form': form, 'profile': profile,}))
+    return render(request, "vehicle.html", {'form': form, 'profile': profile})
+
 
 @login_required
 def shelter(request):
@@ -337,7 +339,7 @@ def shelter(request):
 
             return redirect('shelter')
 
-    return render(request, "shelter.html", RequestContext(request, {'form': form}))
+    return render(request, "shelter.html", {'form': form})
 
 @staff_member_required
 def remove_bike(request):
@@ -349,7 +351,7 @@ def remove_bike(request):
         bike.delete()
         return render_to_response('bikes.html', {
             'form':form, 'bicycles':bicycles,
-            }, RequestContext(request))
+            })
 
 @staff_member_required
 def edit_bike(request, bike_id):
@@ -364,7 +366,8 @@ def edit_bike(request, bike_id):
             return redirect('bikes')
 
     context_dict = {'form':form}
-    return render_to_response('edit_bike.html', context_dict, RequestContext(request))
+    return render_to_response('edit_bike.html', context_dict)
+
 
 @login_required
 def show_bike_form(request):
@@ -378,11 +381,12 @@ def show_bike_form(request):
 
     else:
         form = BikeForm()
-    context = RequestContext(request)
     return render_to_response('bikes.html', {
-            'form':form, 'bicycles':bicycles,
-            }, RequestContext(request))
-    # currently owner's last year is required. probably good to remove that field.
+        'form': form, 'bicycles': bicycles,
+    })
+    # currently owner's last year is required. probably good to remove
+    # that field.
+
 
 @login_required
 def remove_items_from_bikemutation(request):
@@ -393,8 +397,8 @@ def remove_items_from_bikemutation(request):
         item = BicycleMutationInventory.objects.get(id=item_id)
         item.delete()
         return render_to_response('bikemutation.html', {
-            'form':form, 'materials':materials
-            }, RequestContext(request))
+            'form': form, 'materials': materials
+            })
 
 @login_required
 def edit_bikemutation(request):
@@ -416,43 +420,47 @@ def edit_bikemutation(request):
             return redirect('bikemutation')
 
     context_dict = {
-           'item_id':item_id, 'form':form, 'materials':materials
-            }
-    return render_to_response('bikemutation.html', context_dict, RequestContext(request))
+        'item_id': item_id, 'form': form, 'materials': materials
+    }
+
+    return render_to_response('bikemutation.html', context_dict)
+
 
 @login_required
 def bikemutation(request):
     materials = BicycleMutationInventory.objects.all()
     if request.method == "POST":
-        form = BikeMaterialForm(data = request.POST)
+        form = BikeMaterialForm(data=request.POST)
         if form.is_valid():
             form.save()
         else:
             print "FORM WASNT VALID!!! OH NO!!!!"
     else:
         form = BikeMaterialForm()
-    context_dict = {'form':form, 'materials':materials}
-    return render_to_response('bikemutation.html', context_dict, RequestContext(request))
+
+    return render_to_response('bikemutation.html', {
+        'form': form, 'materials': materials})
+
 
 @login_required
 def remove_items_from_truck(request):
     if request.method == 'POST':
         form = InventoryForm()
         truck_inventory = Inventory.objects.all()
-        item_id = int(request.POST.get('item_id'))  #this line is the problem
+        item_id = int(request.POST.get('item_id'))  # this line is the problem
         item = Inventory.objects.get(id=item_id)
         item.delete()
         return render_to_response('inventory.html', {
-            'form':form, 'truck_inventory':truck_inventory,
-            }, RequestContext(request))
+            'form': form, 'truck_inventory': truck_inventory,
+        })
+
 
 @login_required
 def edit_truck_inventory(request):
     truck_inventory = Inventory.objects.all()
 
     item_id = int(
-        request.POST.get('item_id',
-            request.GET.get('item_id')))
+        request.POST.get('item_id', request.GET.get('item_id')))
 
     item = int(request.POST.get('item_id'))
 
@@ -465,26 +473,28 @@ def edit_truck_inventory(request):
             form.save()
             return redirect('inventory')
 
-    context_dict = {"item_id": item_id, 'form':form, "truck_inventory":truck_inventory}
+    return render_to_response('inventory.html', {
+        "item_id": item_id,
+        'form': form,
+        "truck_inventory": truck_inventory
+    })
 
-    return render_to_response('inventory.html', context_dict, RequestContext(request))
 
 @login_required
 def show_inventory_form(request):
     truck_inventory = Inventory.objects.all()
     if request.method == "POST":
-        form = InventoryForm(data = request.POST)
+        form = InventoryForm(data=request.POST)
         if form.is_valid():
             form.save()
     else:
         form = InventoryForm()
-    context = RequestContext(request)
     return render_to_response('inventory.html', {
-            'form':form, 'truck_inventory':truck_inventory,
-            }, RequestContext(request))
+        'form': form, 'truck_inventory': truck_inventory,
+    })
+
 
 def register(request):
-    context = RequestContext(request)
     registered = False
 
     if request.method == 'POST':
@@ -510,8 +520,11 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    return render_to_response('register.html',
-        RequestContext(request, {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},))
+    return render_to_response('register.html', {
+        'user_form': user_form, 'profile_form': profile_form,
+        'registered': registered
+    })
+
 
 @login_required
 def bms_worker_signup(request, shift_id):
@@ -533,17 +546,15 @@ def bms_worker_signup(request, shift_id):
 
         return redirect('bms_shifts')
 
+
 @login_required
 def bms_shifts(request):
     event = get_current_event()
-    shifts = BikeMutationSchedule.objects.filter(event=event).order_by('date', '-shift')
+    shifts = BikeMutationSchedule.objects.filter(
+        event=event).order_by('date', '-shift')
 
-    context_dict = {
-        'shifts': shifts
-    }
+    return render_to_response('bikemutationsignup.html', {'shifts': shifts})
 
-    return render_to_response('bikemutationsignup.html',
-        RequestContext(request, context_dict,))
 
 @login_required
 def calendarview(request):
@@ -574,21 +585,20 @@ def calendarview(request):
             'staying': staying,
             'unconfirmed': unconfirmed})
 
-        meals_by_day.append(Meal.objects.filter(day=day
-            ).order_by('kind'
-            ).prefetch_related('shifts__worker'))
+        meals_by_day.append(Meal.objects.filter(
+            day=day).order_by(
+            'kind').prefetch_related('shifts__worker'))
 
         bike_shifts_by_day.append(BikeMutationSchedule.objects.filter(
             date=day, worker__isnull=False))
 
-    context_dict = {
+    return render_to_response('calendar.html', {
         'days': days,
         'counts_by_day': counts_by_day,
         'meals_by_day': meals_by_day,
         'bike_shifts_by_day': bike_shifts_by_day
-    }
-    return render_to_response('calendar.html',
-        RequestContext(request, context_dict))
+    })
+
 
 def _user_to_row(user):
     simple_attrs = [

@@ -8,6 +8,7 @@ from .forms import ChefForm
 from .views import _maintain_meal_requirements
 from .models import MealShift
 
+
 class ChefRequirementsTestCase(TestCase):
     def setUp(self):
         self.event = factories.EventFactory()
