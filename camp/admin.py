@@ -14,7 +14,11 @@ class UserAttendanceAdmin(admin.ModelAdmin):
         'paid_dues', 'has_ticket', 'looking_for_ticket')
     search_fields = ('user__email', 'user__first_name', 'user__last_name')
 
-admin.site.register(Meal)
+
+class MealAdmin(admin.ModelAdmin):
+    list_filter = ('event', 'kind')
+
+admin.site.register(Meal, MealAdmin)
 admin.site.register(MealShift)
 admin.site.register(User, UserAdmin)
 admin.site.register(UserAttendance, UserAttendanceAdmin)
