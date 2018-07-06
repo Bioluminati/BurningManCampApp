@@ -374,6 +374,10 @@ class BikeMutationSchedule(models.Model):
     worker = models.ForeignKey(User, null=True, blank=True, default=None)
     date = models.DateField()
 
+
+    class Meta:
+        ordering = ('event', 'date')
+
     def __unicode__(self):
         return '%s %s %s' % (self.shift, self.worker, self.date)
 
