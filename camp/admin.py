@@ -18,6 +18,11 @@ class UserAttendanceAdmin(admin.ModelAdmin):
 class MealAdmin(admin.ModelAdmin):
     list_filter = ('event', 'kind')
 
+
+class BikeMutationScheduleAdmin(admin.ModelAdmin):
+    list_filter = ('event',)
+
+
 admin.site.register(Meal, MealAdmin)
 admin.site.register(MealShift)
 admin.site.register(User, UserAdmin)
@@ -26,7 +31,7 @@ admin.site.register(Bike)
 admin.site.register(Inventory)
 admin.site.register(BicycleMutationInventory)
 admin.site.register(MealRestriction)
-admin.site.register(BikeMutationSchedule)
+admin.site.register(BikeMutationSchedule, BikeMutationScheduleAdmin)
 admin.site.register(Vehicle)
 
 
