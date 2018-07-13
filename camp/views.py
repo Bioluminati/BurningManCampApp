@@ -550,7 +550,7 @@ def bms_worker_signup(request, shift_id):
 def bms_shifts(request):
     event = get_current_event()
     shifts = BikeMutationSchedule.objects.filter(
-        event=event).order_by('date', '-shift')
+        event=event).order_by('date', '-shift', 'id')
 
     return render(request, 'bikemutationsignup.html', {'shifts': shifts})
 
