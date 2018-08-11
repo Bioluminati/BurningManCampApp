@@ -26,6 +26,13 @@ if env_key is None:
     raise ValueError("Expected secret key from environ SECRET_KEY.  Add it.")
 SECRET_KEY = env_key
 
+
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+ANYMAIL = {
+    "MAILGUN_API_KEY": os.environ.get("MAILGUN_API_KEY"),
+    "MAILGUN_SENDER_DOMAIN": os.environ.get("MAILGUN_DOMAIN")
+}
+
 # set this to the PK of the event you want the site to be active for.
 #  If None, defaults to the event with the latest start date.
 CURRENT_EVENT_ID = None
@@ -41,6 +48,8 @@ LOGIN_REDIRECT_URL = '/profile/'
 
 # Application definition
 
+DEFAULT_FROM_EMAIL = 'jdunck@gmail.com'
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,6 +63,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     # 'django_tables2',
     'camp',
+    'anymail',
     # 'bootstrap3',
 )
 

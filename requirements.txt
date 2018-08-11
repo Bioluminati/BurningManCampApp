@@ -12,3 +12,4 @@ django-crispy-forms==1.7.0
 raven>=6.5.0
 arrow==0.12.1
 unicodecsv==0.14.1
+django-anymail[mailgun]==3.0
