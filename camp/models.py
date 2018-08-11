@@ -252,11 +252,13 @@ class Meal(models.Model):
     Breakfast = "Breakfast"
     Dinner = "Dinner"
     Midnight = "Midnight"
+    Bartend = "Bartend"
 
     Kinds = (
          (Breakfast, "Breakfast"),
          (Dinner, "Dinner"),
          (Midnight, "Midnight BBQ"),
+         (Bartend, "Bartending")
     )
 
     event = models.ForeignKey(Event, help_text="What year/regional is this for?")

@@ -26,7 +26,12 @@ class Command(BaseCommand):
         # bbq is typically tues-sat of core week
         parser.add_argument('earliest_bbq', action="store", type=_parse_date, help="in YYYY-MM-DD format")
         parser.add_argument('latest_bbq', action="store", type=_parse_date, help="in YYYY-MM-DD format")
-        # bms is typically mon-thurs of core week
+
+        # bartending is typically Monday to Sunday of core week
+        parser.add_argument('earliest_bar', action="store", type=_parse_date, help="in YYYY-MM-DD format")
+        parser.add_argument('latest_bar', action="store", type=_parse_date, help="in YYYY-MM-DD format")
+
+        # bms is typically Mon-Thurs of core week
         parser.add_argument('earliest_bms', action="store", type=_parse_date, help="in YYYY-MM-DD format")
         parser.add_argument('latest_bms', action="store", type=_parse_date, help="in YYYY-MM-DD format")
 
@@ -64,6 +69,9 @@ class Command(BaseCommand):
                 for kind, _ in Meal.Kinds:
                     if kind == Meal.Midnight:
                         if day < o['earliest_bbq'] or o['latest_bbq'] < day:
+                            continue
+                    elif kind == Meal.Bartend:
+                        if day < o['earliest_bar'] or o['latest_bar'] < day:
                             continue
 
                     meal = Meal.objects.create(event=event, day=day, kind=kind)
