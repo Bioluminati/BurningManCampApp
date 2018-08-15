@@ -16,7 +16,7 @@ All breakfasts and dinners need chefs.  Midnight BBQs and Bartending are optiona
 {% for meals in meals_by_day %}
     {% if meals %}
     <tr>
-        <th>{{ meals.0.day|date }}</th>
+        <th>{{ meals.0.day|date:"D N j" }}</th>
         {% for meal in meals %}
         <td>
           <h3>{{ meal.kind }}</h3>
