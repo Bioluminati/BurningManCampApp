@@ -14,13 +14,15 @@ sharing_someone_elses = "sharing"
 bringing_own_tent = "bringing"
 sleep_in_vehicle = "car"
 using_camp_yurt = "yurt"
+using_own_yurt = "own_yurt"
 other = "other"
 
 Sleeping_arrangements = (
     (undetermined, "Not sure yet"),
     (bringing_own_tent, "Bringing own tent"),
     (sleep_in_vehicle, "Sleeping in own vehicle"),
-    (using_camp_yurt, "Using camp yurt"),
+    (using_camp_yurt, "Using camp yurt (must reserve with Yurt Organizer)"),
+    (using_own_yurt, "Using your own yurt"),
     (sharing_someone_elses, "Sharing someone else's" ),
     (other, "Other"),
 )
