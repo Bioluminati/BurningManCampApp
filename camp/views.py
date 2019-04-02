@@ -165,9 +165,9 @@ def worker_signup(request, shift_id):
     return redirect('meal_shifts')
 
 def index(request):
-    shifts = MealShift.objects.all()
+    home_content = FlatPage.objects.get(title='homepage')
     pages = FlatPage.objects.order_by('title')
-    return render(request, "index.html", {'shifts': shifts, 'pages': pages})
+    return render(request, "index.html", {'home_content': home_content.content, 'pages': pages})
 
 def login(request):
 

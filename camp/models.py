@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from datetime import timedelta
 
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager, AnonymousUser
 from django.db import models
 from django.forms import ModelForm
 from django.utils import timezone
@@ -189,6 +189,8 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, True, True,
                                  **extra_fields)
 
+COUNCIL_GROUP = 'Council'
+AnonymousUser.is_council = False
 class User(AbstractUser):
     # FIXME: if we don't want these nullable, we should have them as part of
     # signup.
@@ -205,6 +207,10 @@ class User(AbstractUser):
     meal_restrictions = models.ManyToManyField(MealRestriction, related_name="campers", blank=True)
 
     objects = UserManager()
+
+    @property
+    def is_council(self):
+        return COUNCIL_GROUP in {g.name for g in self.groups.all()}
 
     @property
     def display_name(self):
