@@ -32,7 +32,7 @@
 	<h2>Editable pages -- for Council review</h2>
 	<ul>
 	{% for page in pages %}
-	 <li><a href="/pages{{page.url}}">{{page.title}}</a> -- <a href="{% url 'admin:flatpages_flatpage_change' page.id %}">admin</a></li>
+	 <li><a href="/pages{{page.url}}">{{page.title}}</a> {% if user.is_staff %}-- <a href="{% url 'admin:flatpages_flatpage_change' page.id %}">admin</a> {% endif %}</li>
 	{% endfor %}
 	</ul>
 	</p>
