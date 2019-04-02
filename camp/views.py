@@ -20,6 +20,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.flatpages.models import FlatPage
 from django.utils.decorators import method_decorator
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib import messages
@@ -165,7 +166,8 @@ def worker_signup(request, shift_id):
 
 def index(request):
     shifts = MealShift.objects.all()
-    return render(request, "index.html", {'shifts': shifts})
+    pages = FlatPage.objects.order_by('title')
+    return render(request, "index.html", {'shifts': shifts, 'pages': pages})
 
 def login(request):
 

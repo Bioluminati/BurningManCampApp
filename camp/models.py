@@ -192,8 +192,6 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     # FIXME: if we don't want these nullable, we should have them as part of
     # signup.
-    # FIXME: if we want to track attendance, we should pull out year-specific
-    #  stuff to a separate model.
     playa_name = models.CharField(max_length=255, blank=True)
     sponsor = models.ForeignKey('self', null=True, blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True, null=True)

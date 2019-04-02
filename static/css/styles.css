@@ -399,11 +399,6 @@ footer {
 }
 
 #landingtext {
-    position: relative;
-    left: 7%;
-    top: 10%;
-    width: 80%;
-    height: 90%;
     border: 3px solid #C7C7C7; 
     border-radius: 5px;
     padding-left: 4%;

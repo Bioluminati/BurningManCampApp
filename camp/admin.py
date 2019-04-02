@@ -37,7 +37,6 @@ admin.site.register(Vehicle)
 
 class CustomFlatPageAdmin(FlatPageAdmin):
     def view_on_site(self, obj):
-        # Handle script prefix manually because we bypass reverse()
         return iri_to_uri(get_script_prefix().rstrip('/') +
                           '/pages' + obj.url)
 
