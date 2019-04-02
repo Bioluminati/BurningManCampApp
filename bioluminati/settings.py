@@ -38,7 +38,7 @@ ANYMAIL = {
 CURRENT_EVENT_ID = None
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ["localhost", "localhost:8000", "bioluminati-prod.herokuapp.com", "bioluminati-prod2.herokuapp.com", "bioluminati.org", "bioluminati.com"]
 
