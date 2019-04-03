@@ -18,7 +18,7 @@ def _parse_date(value):
     return datetime(year, month, day)
 
 class Command(BaseCommand):
-    help = "Sets up a new event/year"
+    help = "Sets up a new event/year "
 
     def add_arguments(self, parser):
         parser.add_argument('earliest_arrival', action="store", type=_parse_date, help="in YYYY-MM-DD format")
