@@ -18,9 +18,10 @@ def _parse_date(value):
     return datetime(year, month, day)
 
 class Command(BaseCommand):
-    help = "Sets up a new event/year "
+    help = "Sets up a new event/year"
 
     def add_arguments(self, parser):
+        # setup wednesday before, exodus tuesday after
         parser.add_argument('earliest_arrival', action="store", type=_parse_date, help="in YYYY-MM-DD format")
         parser.add_argument('latest_departure', action="store", type=_parse_date, help="in YYYY-MM-DD format")
         # bbq is typically tues-sat of core week
