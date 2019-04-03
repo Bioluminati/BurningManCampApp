@@ -188,12 +188,6 @@ def login(request):
 
     return render(request, 'login.html')
 
-def about(request):
-     return render(request, 'about.html')
-
-def prep(request):
-     return render(request, 'prep.html')
-
 @login_required
 def campers(request):
     event = get_current_event()

@@ -57,6 +57,12 @@
                   <li><a href={% url 'calendar' %}>Bio Calendar</a></li>
                   <li><a href={% url 'inventory' %}>Truck Inventory</a></li>
                   <li><a href={% url 'export' %}>CSV export</a></li>
+                  {% if user.is_council %}
+                    <li>TK new member approval<li>
+                  {% endif %}
+                  {% if user.is_staff %}
+                    <li><a href="/admin/">Admin</a></li>
+                  {% endif %}
                 </ul>
               </li>
               <li><a href={% url "logout" %}>Logout</a></li>

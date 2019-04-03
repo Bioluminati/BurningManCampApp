@@ -65,6 +65,10 @@ footer {
     box-sizing: border-box;
 }
 
+#nav li {
+    color: #ffffff;
+}
+
 #nav li:hover a{
     background-image: none;
     color: pink;
