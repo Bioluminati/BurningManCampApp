@@ -80,6 +80,19 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 10
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = False
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_HOST = "www.bioluminati.org"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    X_FRAME_OPTIONS = "DENY"
+
+
 ROOT_URLCONF = 'bioluminati.urls'
 
 TEMPLATES = [
