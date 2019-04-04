@@ -40,7 +40,7 @@ CURRENT_EVENT_ID = None
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False)
 
-ALLOWED_HOSTS = ["localhost", "localhost:8000", "bioluminati-prod.herokuapp.com", "bioluminati-prod2.herokuapp.com", "bioluminati.org", "bioluminati.com"]
+ALLOWED_HOSTS = ["localhost", "localhost:8000", "bioluminati-prod.herokuapp.com", "bioluminati-prod2.herokuapp.com", "bioluminati.org", "bioluminati.com", "www.bioluminati.org", "www.bioluminati.com"]
 
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
