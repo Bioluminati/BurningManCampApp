@@ -1,8 +1,13 @@
 from collections import defaultdict
 
 from django import forms
+from django.conf import settings
+from django.contrib.auth.forms import PasswordResetForm as DjPasswordResetForm
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
+from django.template import loader
+
 from arrow.parser import ParserError
 
 from .models import (
@@ -12,6 +17,26 @@ from .models import ( #shelter
   sharing_someone_elses, bringing_own_tent, sleep_in_vehicle, SIZE_CHOICES)
 from .models import ( #transit
   DRIVING, RIDING_WITH)
+
+class PasswordResetForm(DjPasswordResetForm):
+    def send_mail(self, subject_template_name, email_template_name,
+                  context, from_email, to_email, html_email_template_name=None):
+        """
+        Sends a django.core.mail.EmailMultiAlternatives to `to_email`.
+        """
+        subject = loader.render_to_string(subject_template_name, context)
+        # Email subject *must not* contain newlines
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string(email_template_name, context)
+
+        email_message = EmailMultiAlternatives(subject, body, from_email, [to_email],
+          reply_to=settings.REPLY_TO)
+        if html_email_template_name is not None:
+            html_email = loader.render_to_string(html_email_template_name, context)
+            email_message.attach_alternative(html_email, 'text/html')
+
+        email_message.send()
+
 
 class ChefForm(forms.Form):
     MAX_WORKERS = [(i, i) for i in range(5)]

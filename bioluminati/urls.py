@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth.views import login, logout
 from camp import views
+from camp.forms import PasswordResetForm
 
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import PasswordResetView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -27,8 +28,9 @@ urlpatterns = [
     # FIXME: should the public be able to register?
     #  Likely should have a prompt to contact council or seek sponsor
     #  url(r'^register/', views.register, name='register'),
-    url(r'^login/', login, name='login',kwargs={'template_name': 'login.html'}),
-    url(r'^logout/$', logout, name='logout', kwargs={'next_page': '/'}),
+
+    url(r'^auth/password_reset/$', PasswordResetView.as_view(form_class=PasswordResetForm), name='password_reset'),
+    url(r'^auth/', include('django.contrib.auth.urls')),
     url(r'^confirm/', views.register, name='confirm'),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
     url(r'^profile/', views.profile, name='profile'),

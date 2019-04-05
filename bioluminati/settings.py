@@ -26,6 +26,7 @@ if env_key is None:
     raise ValueError("Expected secret key from environ SECRET_KEY.  Add it.")
 SECRET_KEY = env_key
 
+SITE_ID = 1
 
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 ANYMAIL = {
@@ -42,13 +43,14 @@ DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ["localhost", "localhost:8000", "bioluminati-prod.herokuapp.com", "bioluminati-prod2.herokuapp.com", "bioluminati.org", "bioluminati.com", "www.bioluminati.org", "www.bioluminati.com"]
 
-LOGIN_URL = '/login/'
-LOGOUT_URL = '/logout/'
+LOGIN_URL = '/auth/login/'
+LOGOUT_URL = '/auth/logout/'
 LOGIN_REDIRECT_URL = '/profile/'
+LOGOUT_REDIRECT_URL = '/'
 
-# Application definition
+DEFAULT_FROM_EMAIL = 'server@heroku.bioluminati.org'
 
-DEFAULT_FROM_EMAIL = 'jdunck@gmail.com'
+REPLY_TO = ['jdunck@gmail.com', 'bioluminatiops@gmail.com']
 
 INSTALLED_APPS = (
     'django.contrib.admin',
