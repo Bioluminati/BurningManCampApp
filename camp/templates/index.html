@@ -7,25 +7,14 @@
 <div id="landingtext">
 	{{ home_content|safe }}
 
-	<!--	
-	<h2>Site help</h2>
-	{% if user.is_council %}
-	<h3>TK council help</h3>
-	{% endif %}
-
-	{% if user.is_admin %}
-	<h3>TK admin details</h3>
-	{% endif %}
-
 	{% if user.is_authenticated %}
 	<h3>TK user help</h3>
-	<p>If you're logging in for the first time ever or even the first time this year, please <a href="/pages/why-registration/">read about registration</a>.</p>
+	<p>If you're logging in for the first time ever or even the first time this year, please <a href="http://bioluminati.info/why-register/">read about registration</a>.</p>
 	{% else %}
 	<h3>You're not yet logged in</h3>
-	<p>If you're already a camper, <a href="/auth/login/">login</a>.</p>
-	<p>If you're new to Bioluminati, you'll need an existing member to TK <a href="/pages/sponsor/">sponsor you</a>.</p>
+	<p>If you already a member, <a href="/auth/login/">login</a>.</p>
+	<p>If you're new to Bioluminati, please <a href="http://bioluminati.info/">read about the process</a> of joining our camp.</p>
 	{% endif %}
-	-->
 </div>
 
 {% if user.is_council %}
