@@ -92,7 +92,7 @@ if not DEBUG:
     SECURE_SSL_HOST = "www.bioluminati.org"
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    X_FRAME_OPTIONS = "DENY"
+    X_FRAME_OPTIONS = "ALLOW-FROM http://bioluminati.info/"
 
 
 ROOT_URLCONF = 'bioluminati.urls'
