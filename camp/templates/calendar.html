@@ -15,9 +15,14 @@
 			{% for counts in counts_by_day %}
 				<td class="weekdaycell">
 				<ul>
-					<li>Arriving: {{ counts.arriving }}</li>
+					<li>Arriving for breakfast: {{ counts.arriving_breakfast }}</li>
+					<li>Arriving for dinner: {{ counts.arriving_dinner }}</li>
+					<li>Arriving for late: {{ counts.arriving_late }}</li>
 					<li>Staying: {{ counts.staying }}</li>
 					<li>Departing: {{ counts.departing }}</li>
+					<li>Departing after breakfast: {{ counts.departing_breakfast }}</li>
+					<li>Departing after dinner: {{ counts.departing_dinner }}</li>
+					<li>Departing after late: {{ counts.departing_late }}</li>
 					<li>Unconfirmed: {{ counts.unconfirmed }}</li>
 				</ul>
 				</td>

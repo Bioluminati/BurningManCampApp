@@ -147,6 +147,7 @@ class Event(models.Model):
     class Meta:
         ordering = ('start_date',)
 
+
 class MealRestriction(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
 
@@ -232,6 +233,8 @@ class UserAttendanceQS(models.QuerySet):
     def attendees(self):
         return self.filter(event=get_current_event(), camping_this_year=True)
 
+BREAKFAST_TIME = 10
+DINNER_TIME = 19
 
 class UserAttendance(models.Model):
     user = models.ForeignKey(User)

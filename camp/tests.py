@@ -20,7 +20,6 @@ class ChefRequirementsTestCase(TestCase):
             'number_of_kp': kp
         })
         if not form.is_valid():
-            import pdb;pdb.set_trace()
             raise ValueError()
         return form
 

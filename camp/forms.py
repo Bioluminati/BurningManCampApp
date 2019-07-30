@@ -1,5 +1,7 @@
 from collections import defaultdict
 
+from datetime import datetime, timedelta
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import PasswordResetForm as DjPasswordResetForm
@@ -16,7 +18,7 @@ from .models import (
 from .models import ( #shelter
   sharing_someone_elses, bringing_own_tent, sleep_in_vehicle, SIZE_CHOICES)
 from .models import ( #transit
-  DRIVING, RIDING_WITH)
+  DRIVING, RIDING_WITH, BREAKFAST_TIME, DINNER_TIME)
 
 class PasswordResetForm(DjPasswordResetForm):
     def send_mail(self, subject_template_name, email_template_name,
@@ -144,22 +146,66 @@ class UserProfileForm(forms.ModelForm):
             'meal_restrictions': forms.widgets.CheckboxSelectMultiple(),
         }
 
+
+ARRIVAL_TIME_CHOICES = (
+  (None, ""),
+  (BREAKFAST_TIME - 1, 'By Breakfast'),
+  (DINNER_TIME - 1, 'By Dinner'),
+  (23, 'By Midnight'),
+)
+
+DEPARTURE_TIME_CHOICES = (
+  (None, ""),
+  (BREAKFAST_TIME - 1, 'Before Breakfast'),
+  (DINNER_TIME - 1, 'After Breakfast'),
+  (23, 'After Dinner'),
+)
+
 class UserAttendanceForm(forms.ModelForm):
+    arrival_time = forms.TypedChoiceField(choices=ARRIVAL_TIME_CHOICES, required=False, coerce=int)
+    departure_time = forms.TypedChoiceField(choices=DEPARTURE_TIME_CHOICES, required=False, coerce=int)
+
+    def __init__(self, *args, **kwargs):
+      super(UserAttendanceForm, self).__init__(*args, **kwargs)
+
+      def initial_hour(k):
+        inital_date = self.initial.get(k) or datetime.fromtimestamp(0)
+        return inital_date.hour
+
+      self.initial['arrival_time'] = initial_hour('arrival_date')
+      self.initial['departure_time'] = initial_hour('departure_date')
+
     def clean(self):
       cleaned_data = super(UserAttendanceForm, self).clean()
       arr = cleaned_data.get('arrival_date')
+      arr_time = cleaned_data.get('arrival_time')
       dept = cleaned_data.get('departure_date')
+      dept_time = cleaned_data.get('departure_time')
       if bool(arr) != bool(dept):
         raise ValidationError("If either arrival or departure are given, both must be given.")
-      if dept:
-        if arr > dept:
-          raise ValidationError("Arrival date must be before departure date.")
+      elif not bool(arr):
+        return
+
+      if not (bool(arr_time) and bool(dept_time)):
+        raise ValidationError("Arrival and depature times must be given.")
+
+      if arr >= dept:
+        raise ValidationError("Arrival date must be before departure date.")
+
+      arr_exact = arr + timedelta(hours=arr_time)
+      dept_exact = dept + timedelta(hours=dept_time)
+
+      cleaned_data['arrival_date'] = arr_exact
+      cleaned_data['departure_date'] = dept_exact
+
+      return cleaned_data
 
     class Meta:
       model = UserAttendance
 
       fields = (
-          'arrival_date', 'departure_date',
+          'arrival_date', 'arrival_time',
+          'departure_date', 'departure_time',
           'has_ticket', 'looking_for_ticket',
           'camping_this_year'
       )

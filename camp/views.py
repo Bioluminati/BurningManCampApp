@@ -26,7 +26,8 @@ from django.views.generic.detail import SingleObjectMixin
 from django.contrib import messages
 
 from .shortcuts import get_current_event
-from .models import Event, Meal, MealShift, User, UserAttendance, Bike, Vehicle, Inventory, Shelter, BicycleMutationInventory, BikeMutationSchedule, Inventory
+from .models import (Event, Meal, MealShift, User, UserAttendance, Bike, Vehicle, Inventory, Shelter, BicycleMutationInventory, BikeMutationSchedule, Inventory,
+    BREAKFAST_TIME, DINNER_TIME)
 from .forms import (UserProfileForm, UserAttendanceForm, VehicleForm,
     UserForm, BikeForm, BikeMaterialForm, InventoryForm, ShelterForm, ChefForm)
 
@@ -284,9 +285,11 @@ def profile(request):
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
         attendance_form = UserAttendanceForm(request.POST, request.FILES,
             instance=request.user.attendance)
+
         if form.is_valid() and attendance_form.is_valid():
             with atomic():
                 form.save()
+
                 attendance_form.save()
             return redirect('profile')
 
@@ -550,6 +553,15 @@ def bms_shifts(request):
 
     return render(request, 'bikemutationsignup.html', {'shifts': shifts})
 
+def transition_counts(prefix, qs):
+    return {
+        prefix: qs.count(),
+        prefix + '_breakfast': qs.filter(arrival_date__hour__lte=BREAKFAST_TIME).count(),
+        prefix + '_dinner': qs.filter(
+            arrival_date__hour__gt=BREAKFAST_TIME,
+            arrival_date__hour__lte=DINNER_TIME).count(),
+        prefix + '_late': qs.filter(arrival_date__hour__gt=DINNER_TIME).count()
+    }
 
 @login_required
 def calendarview(request):
@@ -565,20 +577,24 @@ def calendarview(request):
 
     attendees = UserAttendance.objects.attendees()
     for day in days:
-        arriving = attendees.filter(arrival_date=day).count()
-        departing = attendees.filter(departure_date=day).count()
+        arriving = attendees.filter(arrival_date__date=day)
+        departing = attendees.filter(departure_date__date=day)
+
 
         unconfirmed_criteria = Q(departure_date__isnull=True) | Q(arrival_date__isnull=True)
         unconfirmed = attendees.filter(unconfirmed_criteria).count()
         staying = attendees.exclude(unconfirmed_criteria
-            ).exclude(arrival_date__gte=day
-            ).exclude(departure_date__lte=day).count()
+            ).exclude(arrival_date__date__gte=day
+            ).exclude(departure_date__date__lte=day).count()
 
-        counts_by_day.append({
-            'arriving': arriving,
-            'departing': departing,
+        day_counts = {
             'staying': staying,
-            'unconfirmed': unconfirmed})
+            'unconfirmed': unconfirmed
+        }
+        day_counts.update(transition_counts('arriving', arriving))
+        day_counts.update(transition_counts('departing', departing))
+
+        counts_by_day.append(day_counts)
 
         meals_by_day.append(Meal.objects.filter(
             day=day).order_by(

@@ -14,6 +14,9 @@
 				{% if form.non_field_errors %}
 				  <tr><td colspan=2 class="form-error">{{ form.non_field_errors }}</td></tr>
 				{% endif %}
+				{% if attendance_form.non_field_errors %}
+				  <tr><td colspan=2 class="form-error">{{ attendance_form.non_field_errors }}</td></tr>
+				{% endif %}
 			    <tr><td class="table_instructions">First name: </td><td>{{form.first_name}}{{form.first_name.errors}}</td></tr>
 			    <tr><td class="table_instructions">Last name: </td><td>{{form.last_name}}{{form.last_name.errors}}</td></tr>
 			    <tr><td class="table_instructions">If it's your first year, who is your sponsor? </td><td>{{form.sponsor}}{{form.sponsor.errors}}</td></tr>
@@ -31,8 +34,16 @@
 			    <tr><td class="table_instructions">Tell us anything that doesn't fit elsewhere.</td><td class="squaredTwo">{{form.public_notes}}{{form.public_notes.errors}}</td></tr>
 
 				<tr><td class="table_instructions">Camping this year: </td><td>{{attendance_form.camping_this_year}}{{attendance_form.camping_this_year.errors}}</td></tr>
-			    <tr><td class="table_instructions">What day will you arrive at the Burn?</td><td>{{attendance_form.arrival_date}}{{attendance_form.arrival_date.errors}}</td></tr>
-				<tr><td class="table_instructions">What day will you leave?</td><td>{{attendance_form.departure_date}}{{attendance_form.departure_date.errors}}</td></tr>
+			    <tr><td class="table_instructions">
+			    	When will you arrive at the Burn?</td>
+			    	<td>{{attendance_form.arrival_date}}<br/>
+			    	{{attendance_form.arrival_time}}{{attendance_form.arrival_date.errors}}{{attendance_form.arrival_time.errors}}</td>
+			    </tr>
+				<tr><td class="table_instructions">
+					When will you leave?</td>
+					<td>{{attendance_form.departure_date}}<br/>
+					{{attendance_form.departure_time}}{{attendance_form.departure_date.errors}}{{attendance_form.departure_time.errors}}</td>
+				</tr>
 
 			    <tr><td class="table_instructions">Check this box when you have a ticket</td><td class="squaredTwo">{{attendance_form.has_ticket}}{{attendance_form.has_ticket.errors}}</td></tr>
 			    <tr><td class="table_instructions">Check this box if you need a ticket</td><td class="squaredTwo">{{attendance_form.looking_for_ticket}}{{attendance_form.looking_for_ticket.errors}}</td></tr>
