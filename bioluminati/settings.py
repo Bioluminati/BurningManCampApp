@@ -191,3 +191,4 @@ STATICFILES_DIRS = (
 )
 
 AUTH_USER_MODEL = 'camp.User'
+AUTHENTICATION_BACKENDS = ['camp.custom_auth.EmailOrUsernameModelBackend']
