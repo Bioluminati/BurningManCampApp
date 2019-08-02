@@ -15,9 +15,9 @@ class EmailOrUsernameModelBackend(ModelBackend):
 
         try:
             try:
-                user = UserModel._default_manager.filter(username=username).get()
+                user = UserModel._default_manager.filter(username__iexact=username).get()
             except UserModel.DoesNotExist:
-                user = UserModel._default_manager.filter(email=username).get()
+                user = UserModel._default_manager.filter(email__iexact=username).get()
         except UserModel.DoesNotExist:
             # Run the default password hasher once to reduce the timing
             # difference between an existing and a non-existing user (#20760).
