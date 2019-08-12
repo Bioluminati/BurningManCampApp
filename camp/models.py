@@ -318,7 +318,7 @@ class MealShift(models.Model):
 def half_feet(start, stop):
     return [(i/12.0, i/12.0) for i in range(start * 12, stop * 12, 6)]
 
-SIZE_CHOICES = half_feet(3, 20)
+SIZE_CHOICES = half_feet(3, 30)
 
 class Shelter(models.Model):
     user = models.OneToOneField(User)
@@ -334,7 +334,7 @@ class Shelter(models.Model):
     def __unicode__(self):
         return '%s in %s' % (self.user, self.sleeping_arrangement)
 
-GIANT_SIZE_CHOICES = SIZE_CHOICES + half_feet(20, 99)
+GIANT_SIZE_CHOICES = SIZE_CHOICES + half_feet(30, 99)
 
 class Vehicle(models.Model):
     user = models.OneToOneField(User)
