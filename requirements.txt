@@ -10,6 +10,6 @@ dj-database-url==0.4.2
 factory_boy==2.10.0
 django-crispy-forms==1.7.0
 raven>=6.5.0
-arrow==0.12.1
+arrow==0.15.1
 unicodecsv==0.14.1
 django-anymail[mailgun]==3.0
