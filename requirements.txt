@@ -2,7 +2,7 @@ gunicorn==19.9.0
 Django==1.11.20
 Pillow==3.1.0
 psycopg2-binary==2.7.7
-wheel==0.30.0
+wheel==0.38.1
 whitenoise==3.3.1
 boto==2.48.0
 django-storages==1.6.5
